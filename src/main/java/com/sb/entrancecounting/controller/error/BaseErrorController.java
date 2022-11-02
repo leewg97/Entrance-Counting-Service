@@ -16,6 +16,9 @@ import java.util.Map;
 @Controller
 public class BaseErrorController implements ErrorController {
 
+    /*
+     * View 출력
+     */
     @RequestMapping(path = "/error", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
@@ -34,6 +37,9 @@ public class BaseErrorController implements ErrorController {
         );
     }
 
+    /*
+     * JSON Body 출력
+     */
     @RequestMapping("/error")
     public ResponseEntity<APIErrorResponse> error(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
