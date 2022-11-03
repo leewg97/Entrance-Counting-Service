@@ -1,5 +1,6 @@
 package com.sb.entrancecounting.service;
 
+import com.querydsl.core.types.Predicate;
 import com.sb.entrancecounting.constant.ErrorCode;
 import com.sb.entrancecounting.constant.EventStatus;
 import com.sb.entrancecounting.dto.EventDto;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +21,11 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    public List<EventDto> getEvents(Long placeId, String eventName, EventStatus eventStatus,
-                                    LocalDateTime eventStartDatetime, LocalDateTime eventEndDatetime) {
+    public List<EventDto> getEvents(Predicate predicate) {
         try {
-            return eventRepository.findEvents(placeId, eventName, eventStatus, eventStartDatetime, eventEndDatetime);
+            return StreamSupport.stream(eventRepository.findAll(predicate).spliterator(), false)
+                    .map(EventDto::of)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -29,7 +33,7 @@ public class EventService {
 
     public Optional<EventDto> getEvent(Long eventId) {
         try {
-            return eventRepository.findEvent(eventId);
+            return eventRepository.findById(eventId).map(EventDto::of);
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -37,7 +41,12 @@ public class EventService {
 
     public boolean createEvent(EventDto eventDto) {
         try {
-            return eventRepository.insertEvent(eventDto);
+            if (eventDto == null) {
+                return false;
+            }
+
+            eventRepository.save(eventDto.toEntity());
+            return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -45,7 +54,12 @@ public class EventService {
 
     public boolean modifyEvent(Long eventId, EventDto eventDto) {
         try {
-            return eventRepository.updateEvent(eventId, eventDto);
+            if (eventId == null || eventDto == null) {
+                return false;
+            }
+            eventRepository.findById(eventId)
+                    .ifPresent(event -> eventRepository.save(eventDto.updateEntity(event)));
+            return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -53,7 +67,11 @@ public class EventService {
 
     public boolean removeEvent(Long eventId) {
         try {
-            return eventRepository.deleteEvent(eventId);
+            if (eventId == null) {
+                return false;
+            }
+            eventRepository.deleteById(eventId);
+            return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
