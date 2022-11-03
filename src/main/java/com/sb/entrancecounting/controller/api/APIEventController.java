@@ -47,14 +47,12 @@ public class APIEventController {
     @PostMapping("/events")
     public APIDataResponse<String> createEvent(@Valid @RequestBody EventRequest eventRequest) {
         boolean result = eventService.createEvent(eventRequest.toDto());
-
         return APIDataResponse.of(Boolean.toString(result));
     }
 
     @GetMapping("/events/{eventId}")
     public APIDataResponse<EventResponse> getEvent(@Positive @PathVariable Long eventId) {
         EventResponse eventResponse = EventResponse.from(eventService.getEvent(eventId).orElse(null));
-
         return APIDataResponse.of(eventResponse);
     }
 
