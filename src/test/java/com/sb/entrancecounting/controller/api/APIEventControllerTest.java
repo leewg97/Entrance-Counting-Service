@@ -6,6 +6,7 @@ import com.sb.entrancecounting.constant.EventStatus;
 import com.sb.entrancecounting.dto.EventDto;
 import com.sb.entrancecounting.dto.EventResponse;
 import com.sb.entrancecounting.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Disabled("API 컨트롤러가 필요없는 상황이어서 비활성화")
+@DisplayName("API 컨트롤러 - 이벤트")
 @WebMvcTest(APIEventController.class)
 class APIEventControllerTest {
 
@@ -44,7 +47,7 @@ class APIEventControllerTest {
     @Test
     void givenNothing_whenRequestingEvents_thenReturnsListOfEventsInStandardResponse() throws Exception {
         // Given
-        given(eventService.getEvents(any(), any(), any(), any(), any())).willReturn(List.of(createEventDto()));
+        given(eventService.getEvents(any())).willReturn(List.of(createEventDto()));
 
         // When & Then
         mockMvc.perform(get("/api/events")
@@ -72,7 +75,7 @@ class APIEventControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.errorCode").value(ErrorCode.OK.getCode()))
                 .andExpect(jsonPath("$.message").value(ErrorCode.OK.getMessage()));
-        then(eventService).should().getEvents(any(), any(), any(), any(), any());
+        then(eventService).should().getEvents(any());
     }
 
     @DisplayName("[API][GET] 이벤트 리스트 조회 - 잘못된 검색 파라미터")
