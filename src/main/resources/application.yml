@@ -1,4 +1,18 @@
 spring:
+
+  data:
+    rest:
+      base-path: /api
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
   thymeleaf:
     cache: false  # 변경 사항 바로 볼 수 있게 cache 끔
   thymeleaf3:
@@ -22,3 +36,4 @@ logging:
   level:
     com.sb.entrancecounting: debug
     org.springframework.web.servlet: debug     # api 호출 과정 로그 관찰
+    org.hibernate.type.descriptor.sql.BasicBinder=trace:
