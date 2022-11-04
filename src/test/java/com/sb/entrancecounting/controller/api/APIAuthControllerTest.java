@@ -18,13 +18,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Deprecated
 @Disabled("API 컨트롤러가 필요없는 상황이어서 비활성화")
 @DisplayName("API 컨트롤러 - 인증")
-@WebMvcTest(APIAuthController.class)
-class APIAuthControllerTest {
+@WebMvcTest(ApiAuthController.class)
+class ApiAuthControllerTest {
 
     private final MockMvc mockMvc;
     private final ObjectMapper mapper;
 
-    public APIAuthControllerTest(@Autowired MockMvc mockMvc, @Autowired ObjectMapper mapper) {
+    public ApiAuthControllerTest(
+            @Autowired MockMvc mockMvc,
+            @Autowired ObjectMapper mapper
+    ) {
         this.mockMvc = mockMvc;
         this.mapper = mapper;
     }
@@ -34,19 +37,19 @@ class APIAuthControllerTest {
     void givenAdminDetails_whenSigningUp_thenCreatesAdminAndReturns() throws Exception {
         // Given
         AdminRequest adminRequest = AdminRequest.of(
-                "admin@gmail.com",
-                "admin",
-                "admin",
+                "test@test.com",
+                "testNick",
+                "passwd",
                 "010-1234-5678",
-                "관리자"
+                "test memo"
         );
 
         // When & Then
         mockMvc.perform(
-                        post("/api/sign-up")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(adminRequest))
-                )
+                post("/api/sign-up")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(adminRequest))
+        )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success").value(true))
@@ -59,8 +62,8 @@ class APIAuthControllerTest {
     void givenUsernameAndPassword_whenLoggingIn_thenCreatesAdminAndReturns() throws Exception {
         // Given
         LoginRequest loginRequest = LoginRequest.of(
-                "admin@admin.com",
-                "admin"
+                "test@test.com",
+                "passwd"
         );
 
         // When & Then
