@@ -3,9 +3,12 @@ package com.sb.entrancecounting.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sb.entrancecounting.constant.ErrorCode;
 import com.sb.entrancecounting.constant.EventStatus;
+import com.sb.entrancecounting.constant.PlaceType;
 import com.sb.entrancecounting.dto.EventDto;
 import com.sb.entrancecounting.dto.EventResponse;
+import com.sb.entrancecounting.dto.PlaceDto;
 import com.sb.entrancecounting.service.EventService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Deprecated
+@Disabled("API 컨트롤러가 필요없는 상황이어서 비활성화")
+@DisplayName("API 컨트롤러 - 이벤트")
 @WebMvcTest(APIEventController.class)
 class APIEventControllerTest {
 
@@ -44,7 +50,7 @@ class APIEventControllerTest {
     @Test
     void givenNothing_whenRequestingEvents_thenReturnsListOfEventsInStandardResponse() throws Exception {
         // Given
-        given(eventService.getEvents(any(), any(), any(), any(), any())).willReturn(List.of(createEventDto()));
+        given(eventService.getEvents(any())).willReturn(List.of(createEventDto()));
 
         // When & Then
         mockMvc.perform(get("/api/events")
@@ -72,7 +78,7 @@ class APIEventControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.errorCode").value(ErrorCode.OK.getCode()))
                 .andExpect(jsonPath("$.message").value(ErrorCode.OK.getMessage()));
-        then(eventService).should().getEvents(any(), any(), any(), any(), any());
+        then(eventService).should().getEvents(any());
     }
 
     @DisplayName("[API][GET] 이벤트 리스트 조회 - 잘못된 검색 파라미터")
@@ -101,7 +107,7 @@ class APIEventControllerTest {
         // Given
         EventResponse eventResponse = EventResponse.of(
                 1L,
-                1L,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2022, 11, 3, 19, 0, 0),
@@ -132,7 +138,7 @@ class APIEventControllerTest {
         // Given
         EventResponse eventResponse = EventResponse.of(
                 1L,
-                0L,
+                createPlaceDto(0L),
                 "  ",
                 null,
                 null,
@@ -227,7 +233,7 @@ class APIEventControllerTest {
         long eventId = 1L;
         EventResponse eventResponse = EventResponse.of(
                 eventId,
-                1L,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2022, 11, 3, 19, 0, 0),
@@ -259,7 +265,7 @@ class APIEventControllerTest {
         long eventId = 0L;
         EventResponse eventResponse = EventResponse.of(
                 eventId,
-                0L,
+                createPlaceDto(0L),
                 "  ",
                 null,
                 null,
@@ -320,7 +326,7 @@ class APIEventControllerTest {
     private EventDto createEventDto() {
         return EventDto.of(
                 1L,
-                1L,
+                createPlaceDto(1L),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2022, 11, 1, 13, 0, 0),
@@ -332,6 +338,21 @@ class APIEventControllerTest {
                 LocalDateTime.now()
         );
     }
+
+    private PlaceDto createPlaceDto(Long placeId) {
+        return PlaceDto.of(
+                placeId,
+                PlaceType.COMMON,
+                "헬스장",
+                "서울시 가나구 다라동",
+                "010-1111-2222",
+                10,
+                null,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+    }
+    
 
 
 }

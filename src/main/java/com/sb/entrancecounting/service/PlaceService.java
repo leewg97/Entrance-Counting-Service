@@ -2,10 +2,8 @@ package com.sb.entrancecounting.service;
 
 import com.querydsl.core.types.Predicate;
 import com.sb.entrancecounting.constant.ErrorCode;
-import com.sb.entrancecounting.domain.Place;
-import com.sb.entrancecounting.dto.EventDto;
+import com.sb.entrancecounting.dto.PlaceDto;
 import com.sb.entrancecounting.exception.GeneralException;
-import com.sb.entrancecounting.repository.EventRepository;
 import com.sb.entrancecounting.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,64 +15,59 @@ import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
-public class EventService {
+public class PlaceService {
 
-    private final EventRepository eventRepository;
     private final PlaceRepository placeRepository;
 
-    public List<EventDto> getEvents(Predicate predicate) {
+    public List<PlaceDto> getPlaces(Predicate predicate) {
         try {
-            return StreamSupport.stream(eventRepository.findAll(predicate).spliterator(), false)
-                    .map(EventDto::of)
+            return StreamSupport.stream(placeRepository.findAll(predicate).spliterator(), false)
+                    .map(PlaceDto::of)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
 
-    public Optional<EventDto> getEvent(Long eventId) {
+    public Optional<PlaceDto> getPlace(Long placeId) {
         try {
-            return eventRepository.findById(eventId).map(EventDto::of);
+            return placeRepository.findById(placeId).map(PlaceDto::of);
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
 
-    public boolean createEvent(EventDto eventDto) {
+    public boolean createPlace(PlaceDto placeDto) {
         try {
-            if (eventDto == null) {
+            if (placeDto == null) {
                 return false;
             }
-
-            Place place = placeRepository.findById(eventDto.placeDto().id()).orElseThrow(
-                    () -> new GeneralException(ErrorCode.NOT_FOUND)
-            );
-            eventRepository.save(eventDto.toEntity(place));
+            placeRepository.save(placeDto.toEntity());
             return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
 
-    public boolean modifyEvent(Long eventId, EventDto eventDto) {
+    public boolean modifyPlace(Long placeId, PlaceDto placeDto) {
         try {
-            if (eventId == null || eventDto == null) {
+            if (placeId == null || placeDto == null) {
                 return false;
             }
-            eventRepository.findById(eventId)
-                    .ifPresent(event -> eventRepository.save(eventDto.updateEntity(event)));
+            placeRepository.findById(placeId)
+                    .ifPresent(place -> placeRepository.save(placeDto.toEntity()));
             return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
 
-    public boolean removeEvent(Long eventId) {
+    public boolean removePlace(Long placeId) {
         try {
-            if (eventId == null) {
+            if (placeId == null) {
                 return false;
             }
-            eventRepository.deleteById(eventId);
+            placeRepository.deleteById(placeId);
             return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);

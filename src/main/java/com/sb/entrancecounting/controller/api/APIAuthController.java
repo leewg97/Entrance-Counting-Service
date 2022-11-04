@@ -5,8 +5,9 @@ import com.sb.entrancecounting.dto.AdminRequest;
 import com.sb.entrancecounting.dto.LoginRequest;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api")
+@Deprecated
+//@RestController
+//@RequestMapping("/api")
 public class APIAuthController {
 
     @PostMapping("/sign-up")

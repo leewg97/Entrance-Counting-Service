@@ -33,6 +33,7 @@ public class AdminController {
     public ModelAndView adminPlaceDetail(@PathVariable Long placeId) {
         Map<String, Object> map = new HashMap<>();
         map.put("place", PlaceDto.of(
+                placeId,
                 PlaceType.SPORTS,
                 "에이블짐",
                 "서울시 서초구 사평대로 371",
@@ -68,7 +69,17 @@ public class AdminController {
         Map<String, Object> map = new HashMap<>();
         map.put("event", EventDto.of(
                 eventId,
-                1L,
+                PlaceDto.of(
+                        1L,
+                        PlaceType.SPORTS,
+                        "배드민턴장",
+                        "서울시 그리구 그래동",
+                        "010-2222-3333",
+                        33,
+                        null,
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
+                ),
                 "오후 운동",
                 EventStatus.OPENED,
                 LocalDateTime.of(2022, 11, 3, 19, 0, 0),

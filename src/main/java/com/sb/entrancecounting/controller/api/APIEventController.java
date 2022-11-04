@@ -1,14 +1,15 @@
 package com.sb.entrancecounting.controller.api;
 
 import com.sb.entrancecounting.constant.EventStatus;
+import com.sb.entrancecounting.constant.PlaceType;
 import com.sb.entrancecounting.dto.APIDataResponse;
 import com.sb.entrancecounting.dto.EventRequest;
 import com.sb.entrancecounting.dto.EventResponse;
+import com.sb.entrancecounting.dto.PlaceDto;
 import com.sb.entrancecounting.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,12 +17,12 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Validated
-@RestController
+@Deprecated
 @RequiredArgsConstructor
-@RequestMapping("/api")
+//@Validated
+//@RestController
+//@RequestMapping("/api")
 public class APIEventController {
 
     private final EventService eventService;
@@ -34,12 +35,27 @@ public class APIEventController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventStartDatetime,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime eventEndDatetime
     ) {
-        List<EventResponse> responses = eventService
-                .getEvents(placeId, eventName, eventStatus, eventStartDatetime, eventEndDatetime)
-                .stream().map(EventResponse::from)
-                .collect(Collectors.toList());
-
-        return APIDataResponse.of(responses);
+        return APIDataResponse.of(List.of(EventResponse.of(
+                1L,
+                PlaceDto.of(
+                        1L,
+                        PlaceType.SPORTS,
+                        "헬스장",
+                        "서울시 가나구 다라동",
+                        "010-1111-2222",
+                        0,
+                        null,
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
+                ),
+                "오후 운동",
+                EventStatus.OPENED,
+                LocalDateTime.of(2021, 1, 1, 13, 0, 0),
+                LocalDateTime.of(2021, 1, 1, 16, 0, 0),
+                0,
+                24,
+                "마스크 꼭 착용하세요"
+        )));
     }
 
 

@@ -18,6 +18,7 @@ public record EventRequest(
         @NotNull @Positive Integer capacity,
         String memo
 ) {
+
     public static EventRequest of(
             Long placeId,
             String eventName,
@@ -43,7 +44,7 @@ public record EventRequest(
     public EventDto toDto() {
         return EventDto.of(
                 null,
-                this.placeId(),
+                null,
                 this.eventName(),
                 this.eventStatus(),
                 this.eventStartDatetime(),
