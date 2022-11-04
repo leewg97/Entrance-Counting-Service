@@ -1,7 +1,23 @@
 # Entrance-Counting-Service
 
-### Reference
+## 개발 환경
 
-[Use Case](https://lucid.app/lucidchart/755862d7-fc7c-463e-990f-aa6036176874/edit?viewport_loc=-445%2C228%2C3210%2C1486%2C~ZQYUkF.~.uv&invitationId=inv_58b6d8f3-5283-46e6-a053-2e3687390021)
+* Intellij IDEA Ultimate 2022.2.
+* Java 17
+* Spring Boot 2.7.3
 
-[ERD](https://lucid.app/lucidchart/d3c1b133-0b22-4e80-a9a8-7198d31b6292/edit?viewport_loc=-216%2C48%2C2299%2C1064%2C0_0&invitationId=inv_99739db5-7cab-416f-a52e-4f5eedb932ef)
+## 기술 스택
+* Spring Boot
+* Spring Boot Devtools
+* Spring Web
+* Spring Data JPA
+* Thymeleaf
+* Lombok
+
+## Use Case
+
+![Entrance Counting Service UseCase](https://user-images.githubusercontent.com/77063888/199956346-c87a3e06-98ba-4740-a9a7-d727b36429eb.png)
+
+## ERD
+
+![Entrance Counting Service ERD](https://user-images.githubusercontent.com/77063888/199956358-6ea2489f-b7ab-4e8d-8a9c-b97f41fca97b.png)
