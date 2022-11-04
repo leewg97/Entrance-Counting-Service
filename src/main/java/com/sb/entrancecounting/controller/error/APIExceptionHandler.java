@@ -1,7 +1,7 @@
 package com.sb.entrancecounting.controller.error;
 
 import com.sb.entrancecounting.constant.ErrorCode;
-import com.sb.entrancecounting.dto.APIErrorResponse;
+import com.sb.entrancecounting.dto.ApiErrorResponse;
 import com.sb.entrancecounting.exception.GeneralException;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.HttpHeaders;
@@ -16,51 +16,37 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice(annotations = {RestController.class, RepositoryRestController.class})
-public class APIExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
-        return handleExceptionInternal(e, ErrorCode.VALIDATION_ERROR, HttpHeaders.EMPTY, HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(e, ErrorCode.VALIDATION_ERROR, request);
     }
 
-    /*
-     * GeneralException 의 형태에 따라 바뀌게끔 해석
-     */
     @ExceptionHandler
     public ResponseEntity<Object> general(GeneralException e, WebRequest request) {
-        ErrorCode errorCode = e.getErrorCode();
-        HttpStatus status = errorCode.isClientSideError() ?
-                HttpStatus.BAD_REQUEST :
-                HttpStatus.INTERNAL_SERVER_ERROR;
-
-        return handleExceptionInternal(e, errorCode, HttpHeaders.EMPTY, status, request);
+        return handleExceptionInternal(e, e.getErrorCode(), request);
     }
 
-    /*
-     * 예상치 못한 일반적인 Error
-     */
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
-        return handleExceptionInternal(e, ErrorCode.INTERNAL_ERROR, HttpHeaders.EMPTY, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return handleExceptionInternal(e, ErrorCode.INTERNAL_ERROR, request);
     }
 
-    /*
-     * Spring Error
-     */
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
-        ErrorCode errorCode = status.is4xxClientError() ?
-                ErrorCode.SPRING_BAD_REQUEST :
-                ErrorCode.SPRING_INTERNAL_ERROR;
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handleExceptionInternal(ex, ErrorCode.valueOf(status), headers, status, request);
+    }
 
-        return handleExceptionInternal(ex, errorCode, headers, status, request);
+
+    private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorCode errorCode, WebRequest request) {
+        return handleExceptionInternal(e, errorCode, HttpHeaders.EMPTY, errorCode.getHttpStatus(), request);
     }
 
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorCode errorCode, HttpHeaders headers, HttpStatus status, WebRequest request) {
         return super.handleExceptionInternal(
                 e,
-                APIErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
+                ApiErrorResponse.of(false, errorCode.getCode(), errorCode.getMessage(e)),
                 headers,
                 status,
                 request
