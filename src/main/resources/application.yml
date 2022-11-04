@@ -1,10 +1,18 @@
-debug: true
+debug:
+  false
+
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+
 server:
   error:
     whitelabel:
       enabled: false
+
+logging:
+  level:
+    com.sb.entrancecounting: debug
+    org.springframework.web.servlet: debug     # api 호출 과정 로그 관찰
