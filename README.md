@@ -7,17 +7,21 @@
 * Spring Boot 2.7.3
 
 ## 기술 스택
+* Spring Web
 * Spring Boot
 * Spring Boot Devtools
-* Spring Web
 * Spring Data JPA
+* Spring Security
+* Spring Configuration Processor
+* Validation
 * Thymeleaf
+* MySQL
+
 * Lombok
+* QueryDSL
+* Tailwind CSS
 
-## Use Case
+### Reference
 
-![Entrance Counting Service UseCase](https://user-images.githubusercontent.com/77063888/199956346-c87a3e06-98ba-4740-a9a7-d727b36429eb.png)
-
-## ERD
-
-![Entrance Counting Service ERD](https://user-images.githubusercontent.com/77063888/199956358-6ea2489f-b7ab-4e8d-8a9c-b97f41fca97b.png)
+* [UseCase](https://github.com/leewg97/Entrance-Counting-Service.wiki.git)
+* [ERD](https://github.com/leewg97/Entrance-Counting-Service.wiki.git)
