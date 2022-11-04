@@ -6,7 +6,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/entrance?autoReconnect=true
+    url: jdbc:mysql://localhost:3306/entrance
     username: root
     password: 1234
 
@@ -20,6 +20,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 1000
+
   sql:
     init:
       mode: always
@@ -32,6 +34,10 @@ spring:
   h2:
     console:
       enabled: false
+
+  devtools:
+    restart:
+      quiet-period: 800ms
 
 debug:
   false
@@ -51,4 +57,4 @@ logging:
   level:
     com.sb.entrancecounting: debug
     org.springframework.web.servlet: debug     # api 호출 과정 로그 관찰
-    org.hibernate.type.descriptor.sql.BasicBinder=trace:
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
