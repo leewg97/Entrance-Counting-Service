@@ -7,6 +7,7 @@ import com.sb.entrancecounting.exception.GeneralException;
 import com.sb.entrancecounting.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,24 +15,39 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
 
+    @Transactional(readOnly = true)
     public List<PlaceDto> getPlaces(Predicate predicate) {
         try {
             return StreamSupport.stream(placeRepository.findAll(predicate).spliterator(), false)
                     .map(PlaceDto::of)
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
     }
 
+    @Transactional(readOnly = true)
     public Optional<PlaceDto> getPlace(Long placeId) {
         try {
             return placeRepository.findById(placeId).map(PlaceDto::of);
+        } catch (Exception e) {
+            throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
+        }
+    }
+
+    public boolean upsertPlace(PlaceDto placeDto) {
+        try {
+            if (placeDto.id() != null) {
+                return modifyPlace(placeDto.id(), placeDto);
+            } else {
+                return createPlace(placeDto);
+            }
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
         }
@@ -42,6 +58,7 @@ public class PlaceService {
             if (placeDto == null) {
                 return false;
             }
+
             placeRepository.save(placeDto.toEntity());
             return true;
         } catch (Exception e) {
@@ -49,13 +66,15 @@ public class PlaceService {
         }
     }
 
-    public boolean modifyPlace(Long placeId, PlaceDto placeDto) {
+    public boolean modifyPlace(Long placeId, PlaceDto dto) {
         try {
-            if (placeId == null || placeDto == null) {
+            if (placeId == null || dto == null) {
                 return false;
             }
+
             placeRepository.findById(placeId)
-                    .ifPresent(place -> placeRepository.save(placeDto.toEntity()));
+                    .ifPresent(place -> placeRepository.save(dto.updateEntity(place)));
+
             return true;
         } catch (Exception e) {
             throw new GeneralException(ErrorCode.DATA_ACCESS_ERROR, e);
@@ -67,6 +86,7 @@ public class PlaceService {
             if (placeId == null) {
                 return false;
             }
+
             placeRepository.deleteById(placeId);
             return true;
         } catch (Exception e) {

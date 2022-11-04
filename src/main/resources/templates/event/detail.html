@@ -1,49 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>이벤트</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>이벤트</title>
 </head>
 <body>
-<p>
-  <span id="eventTitle">This is events page.</span>
-</p>
-<table id="eventTable">
-  <tbody>
-    <tr>
-      <td>장소명</td>
-      <td><span id="placeName">?</span></td>
-    </tr>
-    <tr>
-      <td>이벤트명</td>
-      <td><span id="eventName">?</span></td>
-    </tr>
-    <tr>
-      <td>이벤트 상태</td>
-      <td><span id="eventStatus">?</span></td>
-    </tr>
-    <tr>
-      <td>시작 일시</td>
-      <td><span id="eventStartDatetime">?</span></td>
-    </tr>
-    <tr>
-      <td>종료 일시</td>
-      <td><span id="eventEndDatetime">?</span></td>
-    </tr>
-    <tr>
-      <td>현재 인원</td>
-      <td><span id="currentNumberOfPeople">?</span></td>
-    </tr>
-    <tr>
-      <td>최대 수용 인원</td>
-      <td><span id="capacity">?</span></td>
-    </tr>
-    <tr>
-      <td><label for="memo">메모</label></td>
-      <td><textarea id="memo" readonly></textarea></td>
-    </tr>
-  </tbody>
-</table>
-<a id="backToEvents" type="button">취소</a>
+<div class="space-y-4 py-2 align-middle inline-block min-vw-100 sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+        <span id="eventTitle">This is event detail page.</span>
+    </h2>
+    <div>
+        <table id="eventTable" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <tbody>
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    장소명
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="placeName">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    이벤트명
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="eventName">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    이벤트 상태
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="eventStatus">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    시작 일시
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="eventStartDatetime">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    종료 일시
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="eventEndDatetime">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    현재 인원
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="currentNumberOfPeople">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    최대 수용 인원
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <span id="capacity">?</span></th>
+            </tr>
+
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <label for="memo">메모</label></th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <textarea id="memo" readonly></textarea></th>
+            </tr>
+            </tbody>
+        </table>
+        <div align="right">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a id="backToEvents" type="button">뒤로가기</a>
+            </button>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

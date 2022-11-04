@@ -1,12 +1,16 @@
 package com.sb.entrancecounting.controller;
 
+import com.sb.entrancecounting.config.SecurityConfig;
 import com.sb.entrancecounting.dto.PlaceDto;
 import com.sb.entrancecounting.service.PlaceService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,13 +24,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("View 컨트롤러 - 장소")
-@WebMvcTest(PlaceController.class)
+@WebMvcTest(
+        controllers = PlaceController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+)
 class PlaceControllerTest {
 
     private final MockMvc mockMvc;
 
-    @MockBean
-    private PlaceService placeService;
+    @MockBean private PlaceService placeService;
 
     public PlaceControllerTest(@Autowired MockMvc mockMvc) {
         this.mockMvc = mockMvc;
@@ -50,11 +57,11 @@ class PlaceControllerTest {
 
     @DisplayName("[view][GET] 장소 세부 정보 페이지")
     @Test
-    void givenNothing_whenRequestingPlaceDetailPage_thenReturnsPlaceDetailPage() throws Exception {
+    void givenPlaceId_whenRequestingPlaceDetailPage_thenReturnsPlaceDetailPage() throws Exception {
         // Given
         long placeId = 1L;
         given(placeService.getPlace(placeId)).willReturn(Optional.of(
-                PlaceDto.of(placeId, null, null, null, null, null, null, null, null)
+                PlaceDto.of(null, null, null, null, null, null, null, null, null)
         ));
 
         // When & Then
@@ -76,7 +83,7 @@ class PlaceControllerTest {
 
         // When & Then
         mockMvc.perform(get("/places/" + placeId))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("error"));
         then(placeService).should().getPlace(placeId);

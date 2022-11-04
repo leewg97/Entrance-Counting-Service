@@ -1,7 +1,7 @@
 package com.sb.entrancecounting.controller.error;
 
 import com.sb.entrancecounting.constant.ErrorCode;
-import com.sb.entrancecounting.dto.APIErrorResponse;
+import com.sb.entrancecounting.dto.ApiErrorResponse;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +41,7 @@ public class BaseErrorController implements ErrorController {
      * JSON Body 출력
      */
     @RequestMapping("/error")
-    public ResponseEntity<APIErrorResponse> error(HttpServletResponse response) {
+    public ResponseEntity<ApiErrorResponse> error(HttpServletResponse response) {
         HttpStatus status = HttpStatus.valueOf(response.getStatus());
         ErrorCode errorCode = status.is4xxClientError() ?
                 ErrorCode.BAD_REQUEST :
@@ -49,7 +49,7 @@ public class BaseErrorController implements ErrorController {
 
         return ResponseEntity
                 .status(status)
-                .body(APIErrorResponse.of(false, errorCode));
+                .body(ApiErrorResponse.of(false, errorCode));
     }
 
 }
