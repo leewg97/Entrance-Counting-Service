@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api")
+@Deprecated
+//@RestController
+//@RequestMapping("/api")
 public class APIPlaceController {
 
     @GetMapping("/places")
     public APIDataResponse<List<PlaceResponse>> getPlaces() {
         return APIDataResponse.of(List.of(PlaceResponse.of(
+                1L,
                 PlaceType.SPORTS,
                 "에이블짐",
                 "서울시 서초구 사평대로 371",
@@ -38,6 +40,7 @@ public class APIPlaceController {
         }
 
         return APIDataResponse.of(PlaceResponse.of(
+                placeId,
                 PlaceType.SPORTS,
                 "에이블짐",
                 "서울시 서초구 사평대로 371",
