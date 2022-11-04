@@ -8,7 +8,10 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 
-public interface PlaceRepository extends JpaRepository<Place, Long>, QuerydslPredicateExecutor<Place>, QuerydslBinderCustomizer<QPlace> {
+public interface PlaceRepository extends
+        JpaRepository<Place, Long>,
+        QuerydslPredicateExecutor<Place>,
+        QuerydslBinderCustomizer<QPlace> {
 
     @Override
     default void customize(QuerydslBindings bindings, QPlace root) {
