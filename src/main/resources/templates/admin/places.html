@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <title>관리자 장소 리스트</title>
 </head>
 <body>
-<p>
-    This is admin places page.
-</p>
-<ul>
-    <li>placeType: <span th:text="${placeType} ?: _">?</span></li>
-    <li>placeName: <span th:text="${placeName} ?: _">?</span></li>
-    <li>address: <span th:text="${address} ?: _">?</span></li>
-</ul>
+<div class="space-y-4 py-2 align-middle inline-block min-vw-100 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+    <span id="placesTitle">This is admin places page.</span>
+    <div align="right">
+      <button class="py-2 px-3 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <a id="logout">로그아웃</a>
+      </button>
+    </div>
+  </h2>
+  <div>
+    <table id="placesTable" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          장소 이름
+        </th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          전화번호
+        </th>
+        <th scope="col" class="relative px-6 py-3"><span class="sr-only">상세</span></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="placeName px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">테스트 이벤트</td>
+        <td class="phoneNumber px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">0</td>
+        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+          <a class="text-indigo-600 hover:text-indigo-900">상세</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div align="right">
+    <button id="newPlace" type="button" class="py-2 px-3 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">장소 등록</button>
+  </div>
+</div>
 </body>
 </html>
