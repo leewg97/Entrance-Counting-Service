@@ -88,5 +88,4 @@ public record EventDto(
 
         return event;
     }
-
 }
