@@ -23,5 +23,5 @@
 
 ### Reference
 
-* [UseCase](https://github.com/leewg97/Entrance-Counting-Service.wiki.git)
-* [ERD](https://github.com/leewg97/Entrance-Counting-Service.wiki.git)
+* [UseCase](https://github.com/leewg97/Entrance-Counting-Service/wiki/Use-Case)
+* [ERD](https://github.com/leewg97/Entrance-Counting-Service/wiki/ERD)
